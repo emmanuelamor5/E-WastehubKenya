@@ -1,3 +1,5 @@
+E-WastehubKenya Mobile App
+
 This is an Android application built to facilitate registration and trading of electronic waste, promoting responsible 
 disposal and reuse 
 1) Designed user-friendly, data entry and category-based browsing to improve adoption and ease of use 
