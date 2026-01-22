@@ -86,7 +86,7 @@ class CartFragment : Fragment() {
                 is Resource.Loading -> { /* Optionally show a small loader */ }
                 is Resource.Success -> {
                     Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show()
-                    // The cartItems observer will automatically handle the UI update
+                    // The cartItems LiveData will be updated automatically by the ViewModel
                 }
                 is Resource.Error -> {
                     Toast.makeText(context, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()

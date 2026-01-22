@@ -1,7 +1,7 @@
 import java.util.Properties
 import java.io.FileInputStream
 
-// Read local properties at the top level of the script
+
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -23,7 +23,7 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
-        buildConfig = true // Enable BuildConfig generation
+        buildConfig = true 
     }
 
     defaultConfig {
@@ -36,6 +36,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "MPESA_CONSUMER_KEY", "\"${localProperties.getProperty("mpesa.consumer.key")}\"")
         buildConfigField("String", "MPESA_CONSUMER_SECRET", "\"${localProperties.getProperty("mpesa.consumer.secret")}\"")
+        buildConfigField("String", "IMEI_API_KEY", "\"${localProperties.getProperty("imei.api.key")}\"")
     }
 
     buildTypes {
@@ -71,7 +72,8 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation("com.google.firebase:firebase-storage-ktx")
-    implementation("com.google.firebase:firebase-appcheck-debug") // App Check debug
+    implementation("com.google.firebase:firebase-appcheck-debug")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     // Coil
     implementation("io.coil-kt:coil:2.6.0")
@@ -84,7 +86,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    // Your other dependencies
+    // Other dependencies
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("androidx.appcompat:appcompat:1.6.1")

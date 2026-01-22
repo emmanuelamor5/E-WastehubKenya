@@ -10,12 +10,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.e_wastehubkenya.R
 import com.example.e_wastehubkenya.data.Resource
 import com.example.e_wastehubkenya.databinding.FragmentAddStep2Binding
 import com.example.e_wastehubkenya.viewmodel.AddListingViewModel
 import com.example.e_wastehubkenya.viewmodel.ListingViewModel
+import com.example.e_wastehubkenya.viewmodel.MpesaViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AddListingStep2Fragment : Fragment() {
 
@@ -24,6 +28,7 @@ class AddListingStep2Fragment : Fragment() {
 
     private val sharedViewModel: AddListingViewModel by activityViewModels()
     private val listingViewModel: ListingViewModel by viewModels()
+    private val mpesaViewModel: MpesaViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +78,72 @@ class AddListingStep2Fragment : Fragment() {
                 }
             }
         }
+
+        mpesaViewModel.stkPushResult.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is Resource.Success -> {
+                    binding.progressBar.isVisible = false
+                    val checkoutRequestID = resource.data!!.checkoutRequestID
+                    Toast.makeText(context, "STK push initiated. Please check your phone.", Toast.LENGTH_LONG).show()
+                    startPolling(checkoutRequestID)
+                }
+                is Resource.Error -> {
+                    binding.progressBar.isVisible = false
+                    Toast.makeText(context, "Failed to initiate STK push: ${resource.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        mpesaViewModel.stkQueryResult.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    // Optional: Show a different indicator for polling
+                }
+                is Resource.Success -> {
+                    val resultCode = resource.data!!.resultCode
+                    if (resultCode == "0") {
+                        // Payment successful
+                        stopPolling()
+                        Toast.makeText(context, "Payment successful!", Toast.LENGTH_SHORT).show()
+                        createListing()
+                    } else {
+                        if (resultCode != "1037") { // 1037 is request still being processed
+                            stopPolling()
+                            Toast.makeText(context, "Payment failed: ${resource.data.resultDesc}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    stopPolling()
+                    Toast.makeText(context, "Failed to query transaction status: ${resource.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private var isPolling = false
+    private fun startPolling(checkoutRequestID: String) {
+        if (isPolling) return
+        isPolling = true
+        viewLifecycleOwner.lifecycleScope.launch {
+            var retries = 0
+            while (isPolling && retries < 12) { // Poll for 1 minute (12 * 5 seconds)
+                delay(5000)
+                mpesaViewModel.queryStkPushStatus(checkoutRequestID)
+                retries++
+            }
+            if(isPolling) {
+                stopPolling()
+                Toast.makeText(context, "Payment verification timed out.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun stopPolling() {
+        isPolling = false
     }
 
     private fun handleSubmit() {
@@ -86,6 +157,23 @@ class AddListingStep2Fragment : Fragment() {
             return
         }
 
+        // For now, using a hardcoded phone number. You should get this from the user.
+        val phoneNumber = "2547xxxxxxxx" // Replace with a valid phone number
+        val amount = priceText.toDoubleOrNull()?.toInt()?.toString() ?: "0"
+
+        if (amount != "0") {
+            mpesaViewModel.initiateStkPush(amount, phoneNumber, "E-Waste Hub")
+        } else {
+            createListing()
+        }
+    }
+
+    private fun createListing() {
+        val description = binding.etDescription.text.toString().trim()
+        val isDonation = binding.switchDonate.isChecked
+        val priceText = if (!isDonation) binding.etPrice.text.toString().trim() else "0"
+        val location = binding.etLocation.text.toString().trim()
+        
         val currentListing = sharedViewModel.listingInProgress.value!!
         val imageUris = sharedViewModel.imageUris.value!!
 
@@ -99,8 +187,10 @@ class AddListingStep2Fragment : Fragment() {
         listingViewModel.createListing(finalListing, imageUris)
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+        stopPolling()
         _binding = null
     }
 }

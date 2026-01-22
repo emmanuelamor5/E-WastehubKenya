@@ -6,5 +6,5 @@ data class User(
     val email: String = "",
     val phoneNumber: String = "",
     val profilePictureUrl: String = "",
-    val role: String = "Buyer" // Added user role, defaults to Buyer
+    val role: String = "Buyer" // Defaults to Buyer
 )

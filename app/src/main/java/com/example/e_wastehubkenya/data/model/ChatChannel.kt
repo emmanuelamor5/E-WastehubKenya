@@ -13,6 +13,6 @@ data class ChatChannel(
     val lastMessageTimestamp: Date? = null,
     val unreadCount: Map<String, Int> = emptyMap(),
     val listingId: String = "",
-    val listingImageUrl: String = "", // Added for product image
-    val listingName: String = "" // Added for product name
+    val listingImageUrl: String = "",
+    val listingName: String = ""
 )

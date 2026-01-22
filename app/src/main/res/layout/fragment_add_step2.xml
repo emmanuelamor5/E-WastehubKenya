@@ -32,6 +32,14 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
+            <Button
+                android:id="@+id/btnSubmitListing"
+                android:layout_width="296dp"
+                android:layout_height="62dp"
+                android:text="Submit Listing"
+                tools:layout_editor_absoluteX="39dp"
+                tools:layout_editor_absoluteY="590dp" />
+
             <TextView
                 android:id="@+id/tvStep2Title"
                 android:layout_width="wrap_content"
@@ -41,6 +49,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilImei"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="IMEI (optional)"
+                app:layout_constraintEnd_toStartOf="@+id/btnVerifyImei"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStep2Title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etImei"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnVerifyImei"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verify"
+                app:layout_constraintBottom_toBottomOf="@+id/tilImei"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tilImei" />
+
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switchDonate"
                 android:layout_width="0dp"
@@ -49,7 +85,7 @@
                 android:text="Donate Item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvStep2Title" />
+                app:layout_constraintTop_toBottomOf="@+id/tilImei" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescription"
@@ -65,7 +101,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="134dp"
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:minLines="3" />
@@ -106,17 +142,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout><![CDATA[
 
-            <Button
-                android:id="@+id/btnSubmitListing"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android.layout.marginTop="24dp"
-                android:text="Submit Listing"
+            .
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilLocation" />
+
+            ]]>
 
             <ProgressBar
                 android:id="@+id/progressBar"

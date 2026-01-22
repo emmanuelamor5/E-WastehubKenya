@@ -28,7 +28,7 @@ class MyListingsAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateListings(newListings: List<Listing>) {
         listings = newListings
-        notifyDataSetChanged() // This is a simple approach; for better performance, use DiffUtil
+        notifyDataSetChanged() // Notify the adapter that the data has changed
     }
 
     inner class ListingViewHolder(private val binding: ItemListingBinding) : RecyclerView.ViewHolder(binding.root) {

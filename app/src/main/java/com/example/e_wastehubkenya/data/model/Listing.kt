@@ -19,7 +19,7 @@ data class Listing(
     val imageUrls: List<String> = emptyList(),
     val viewCount: Int = 0,
     val viewedBy: List<String> = emptyList(),
-    val status: String = "Available", // New status field
+    val status: String = "Available", // Status field
     val timestamp: Long = 0L,
     val isDonation: Boolean = false,
     val approvedBuyerId: String? = null

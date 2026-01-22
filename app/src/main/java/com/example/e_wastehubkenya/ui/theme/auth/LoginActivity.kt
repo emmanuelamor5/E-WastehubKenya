@@ -92,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToDashboard(userRole: String) {
-        if (hasNavigated) return // Double-check to prevent re-entry
+        if (hasNavigated) return
         hasNavigated = true
 
         val intent = Intent(this, DashboardActivity::class.java)

@@ -58,7 +58,7 @@ class MpesaRepository {
             is Resource.Success -> {
                 val token = tokenResource.data!!
                 val timestamp = getTimestamp()
-                val shortCode = "174379" // Your paybill or till number
+                val shortCode = "174379" // Till number
                 val password = getPassword(shortCode, "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919", timestamp) // Passkey
 
                 val request = StkPushRequest(
@@ -69,7 +69,7 @@ class MpesaRepository {
                     partyA = phoneNumber,
                     partyB = shortCode,
                     phoneNumber = phoneNumber,
-                    callBackURL = "https://jana-noncotyledonous-jonas.ngrok-free.dev/mpesa-callback", // Your callback URL
+                    callBackURL = "https://jana-noncotyledonous-jonas.ngrok-free.dev", // Callback URL
                     accountReference = accountReference,
                     transactionDesc = "E-Waste Hub Purchase"
                 )

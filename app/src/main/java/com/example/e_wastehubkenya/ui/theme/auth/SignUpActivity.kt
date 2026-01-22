@@ -33,7 +33,7 @@ class SignupActivity : AppCompatActivity() {
         setupRoleSpinner()
         observeSignupResult()
 
-        binding.button.setOnClickListener { // Corrected from btnSignup
+        binding.button.setOnClickListener {
             handleSignup()
         }
 
@@ -125,11 +125,11 @@ class SignupActivity : AppCompatActivity() {
             when (resource) {
                 is Resource.Loading -> {
                     binding.progressBar.isVisible = true
-                    binding.button.isEnabled = false // Corrected from btnSignup
+                    binding.button.isEnabled = false
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    binding.button.isEnabled = true // Corrected from btnSignup
+                    binding.button.isEnabled = true
 
                     Toast.makeText(this, "Signup Successful! Please login.", Toast.LENGTH_LONG).show()
                     val intent = Intent(this, LoginActivity::class.java)
@@ -138,7 +138,7 @@ class SignupActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     binding.progressBar.isVisible = false
-                    binding.button.isEnabled = true // Corrected from btnSignup
+                    binding.button.isEnabled = true
 
                     Toast.makeText(this, "Signup Failed: ${resource.message}", Toast.LENGTH_LONG).show()
                 }

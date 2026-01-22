@@ -23,7 +23,7 @@ interface MpesaApiService {
         @Body stkPushRequest: StkPushRequest
     ): StkPushResponse
 
-    @POST("mpesa/stkpushquery/v1/query") // Corrected endpoint
+    @POST("mpesa/stkpushquery/v1/query")
     suspend fun queryStkPushStatus(
         @Header("Authorization") authHeader: String,
         @Body stkQueryRequest: STKQueryRequest
